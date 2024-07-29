@@ -2,6 +2,9 @@ import React, { createContext, useEffect, useState } from "react";
 
 export const ShopContext = createContext(null);
 
+// Define the API URL as a constant
+const API_URL = 'https://a2y-ecom-1.onrender.com';
+
 const getDefaultCart = () => {
   let cart = {};
   for (let index = 0; index < 301; index++) {
@@ -15,12 +18,12 @@ const ShopContextProvider = (props) => {
   const [cartItems, setCartItems] = useState(getDefaultCart());
 
   useEffect(() => {
-    fetch('http://localhost:4000/allproducts')
+    fetch(`${API_URL}/allproducts`)
       .then((response) => response.json())
       .then((data) => setAll_Product(data));
 
     if (localStorage.getItem('auth-token')) {
-      fetch('http://localhost:4000/getcart', {
+      fetch(`${API_URL}/getcart`, {
         method: 'POST',
         headers: {
           Accept: 'application/form-data',
@@ -36,7 +39,7 @@ const ShopContextProvider = (props) => {
   const addToCart = (itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: (prev[itemId] || 0) + 1 }));
     if (localStorage.getItem('auth-token')) {
-      fetch('http://localhost:4000/addtocart', {
+      fetch(`${API_URL}/addtocart`, {
         method: 'POST',
         headers: {
           Accept: 'application/form-data',
@@ -53,7 +56,7 @@ const ShopContextProvider = (props) => {
   const removeFromCart = (itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: (prev[itemId] || 0) - 1 }));
     if (localStorage.getItem('auth-token')) {
-      fetch('http://localhost:4000/removefromcart', {
+      fetch(`${API_URL}/removefromcart`, {
         method: 'POST',
         headers: {
           Accept: 'application/form-data',
