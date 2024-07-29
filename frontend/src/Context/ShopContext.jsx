@@ -19,20 +19,32 @@ const ShopContextProvider = (props) => {
 
   useEffect(() => {
     fetch(`${API_URL}/allproducts`)
-      .then((response) => response.json())
-      .then((data) => setAll_Product(data));
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => setAll_Product(data))
+      .catch((error) => console.error('Error fetching all products:', error));
 
     if (localStorage.getItem('auth-token')) {
       fetch(`${API_URL}/getcart`, {
         method: 'POST',
         headers: {
-          Accept: 'application/form-data',
           'auth-token': `${localStorage.getItem('auth-token')}`,
           'Content-Type': 'application/json',
         },
-        body: "",
-      }).then((response) => response.json())
-        .then((data) => setCartItems((prev) => ({ ...prev, ...data })));
+        body: JSON.stringify({}),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then((data) => setCartItems((prev) => ({ ...prev, ...data })))
+        .catch((error) => console.error('Error fetching cart items:', error));
     }
   }, []);
 
@@ -42,14 +54,19 @@ const ShopContextProvider = (props) => {
       fetch(`${API_URL}/addtocart`, {
         method: 'POST',
         headers: {
-          Accept: 'application/form-data',
           'auth-token': `${localStorage.getItem('auth-token')}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ "itemid": itemId }),
       })
-        .then((response) => response.json())
-        .then((data) => console.log(data));
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then((data) => console.log(data))
+        .catch((error) => console.error('Error adding item to cart:', error));
     }
   };
 
@@ -59,14 +76,19 @@ const ShopContextProvider = (props) => {
       fetch(`${API_URL}/removefromcart`, {
         method: 'POST',
         headers: {
-          Accept: 'application/form-data',
           'auth-token': `${localStorage.getItem('auth-token')}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ "itemid": itemId }),
       })
-        .then((response) => response.json())
-        .then((data) => console.log(data));
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then((data) => console.log(data))
+        .catch((error) => console.error('Error removing item from cart:', error));
     }
   };
 
