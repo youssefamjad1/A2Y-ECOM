@@ -12,16 +12,23 @@ const port = process.env.PORT || 4000;
 const mongoUri = process.env.MONGO_URI;
 const jwtSecret = process.env.JWT_SECRET;
 
-app.use(express.json());
-app.use(cors());
+// CORS configuration
+const corsOptions = {
+  origin: 'https://66a7f0333e3a7100082e117d--a2y.netlify.app', // Frontend URL
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
 
+app.use(express.json());
+app.use(cors(corsOptions));
+
+// Database connection with MongoDB
 const options = {
   ssl: true,
   tlsAllowInvalidCertificates: true,
   serverSelectionTimeoutMS: 5000
 };
 
-// Database connection with MongoDB
 mongoose.connect(mongoUri, options)
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => {
@@ -55,9 +62,10 @@ const upload = multer({ storage: storage });
 app.use('/images', express.static('upload/images'));
 
 app.post("/upload", upload.single('product'), (req, res) => {
+  const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
   res.json({
     success: 1,
-    image_url: `http://localhost:${port}/images/${req.file.filename}`
+    image_url: imageUrl
   });
 });
 
