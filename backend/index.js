@@ -196,9 +196,10 @@ app.get('/newcollections', async (req, res) => {
     res.json(newcollection);
   } catch (err) {
     console.error("Error fetching new collections:", err); // Log detailed error
-    res.status(500).json({ error: "Failed to fetch new collections" });
+    res.status(500).json({ error: "Failed to fetch new collections", details: err.message });
   }
 });
+
 
 
 
