@@ -14,10 +14,12 @@ const jwtSecret = process.env.JWT_SECRET;
 
 // CORS configuration
 const corsOptions = {
-  origin: 'https://a2y.netlify.app', // Correct frontend URL
+  origin: 'https://66a80046043cec0008af93b0--a2y.netlify.app', // Correct URL
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
+
+
 
 app.use(cors(corsOptions));
 app.use(express.json());
