@@ -185,13 +185,17 @@ app.post('/login', async (req, res) => {
 app.get('/newcollections', async (req, res) => {
   try {
     let products = await Product.find({});
-    let newcollection = products.slice(1).slice(-8);
+    if (!products.length) {
+      return res.status(404).json({ error: "No products found" });
+    }
+    let newcollection = products.slice(-8); // Simplify slicing logic
     res.json(newcollection);
   } catch (err) {
     console.error("Error fetching new collections:", err);
     res.status(500).json({ error: "Failed to fetch new collections" });
   }
 });
+
 
 app.get('/popularinwomen', async (req, res) => {
   try {
