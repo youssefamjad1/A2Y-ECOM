@@ -185,16 +185,21 @@ app.post('/login', async (req, res) => {
 app.get('/newcollections', async (req, res) => {
   try {
     let products = await Product.find({});
+    console.log("Products fetched:", products); // Log fetched products
+
     if (!products.length) {
+      console.warn("No products found in the database."); // Warning if no products found
       return res.status(404).json({ error: "No products found" });
     }
-    let newcollection = products.slice(-8); // Simplify slicing logic
+
+    let newcollection = products.slice(-8); // Simplified slicing logic
     res.json(newcollection);
   } catch (err) {
-    console.error("Error fetching new collections:", err);
+    console.error("Error fetching new collections:", err); // Log detailed error
     res.status(500).json({ error: "Failed to fetch new collections" });
   }
 });
+
 
 
 app.get('/popularinwomen', async (req, res) => {
