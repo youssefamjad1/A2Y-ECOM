@@ -1,0 +1,11 @@
+/* 
+  Content-Type: text/html; charset=UTF-8
+
+/assets/js/*.js
+  Content-Type: application/javascript
+
+/assets/css/*.css
+  Content-Type: text/css
+
+/vite.svg
+  Content-Type: image/svg+xml
